@@ -26,7 +26,7 @@ function setDisplay(value) {
 function apply(value) {
   value = Math.min(1000, Math.max(0, value));
   setDisplay(value);
-  browser.storage.session.set({ [`tab_${currentTab.id}`]: value });
+  browser.storage.local.set({ [`tab_${currentTab.id}`]: value });
   browser.tabs.sendMessage(currentTab.id, { type: 'SET_VOLUME', value }).catch(() => {
   });
 }
@@ -57,7 +57,7 @@ async function init() {
   siteLabel.style.display = 'block';
 
   const key = `tab_${currentTab.id}`;
-  const stored = await browser.storage.session.get(key);
+  const stored = await browser.storage.local.get(key);
   
   setDisplay(stored[key] ?? 100);
 
