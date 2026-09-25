@@ -11,7 +11,7 @@ A Firefox extension that allows you to boost the volume of audio and video conte
 # How It Works
 
 - The content script connects <video> and <audio> elements on the page to a GainNode using the Web Audio API. This allows the extension to amplify audio beyond the browser's native volume limit.
-- The popup reads and saves the selected volume level using browser.storage.local, with settings stored separately for each active tab's hostname.
+- The popup reads and stores the selected volume level in browser.storage.local, using the active tab's ID as the key.
 - All configuration is stored locally in the browser. Nothing is transmitted externally. For this reason, the extension manifest declares data_collection_permissions: { required: ["none"] }.
 
 # Installation
