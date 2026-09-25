@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Volume Booster</title>
+<style>
+  :root {
+    --bg: #1b1b1d;
+    --panel: #232326;
+    --border: #38383c;
+    --text: #e8e6e1;
+    --text-dim: #8a8a8f;
+    --safe: #28a745;
+    --boost-mid: #ffc107;
+    --boost-high: #fd7e14;
+    --boost-extreme: #dc3545;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    width: 280px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .wrap { padding: 18px; }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+  .site {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin: 3px 0 18px;
+    word-break: break-all;
+  }
+
+  .readout {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  #volumeValue {
+    font-family: 'JetBrains Mono', 'SF Mono', Consolas, 'Courier New', monospace;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  #volumeValue.safe { color: var(--safe); }
+  #volumeValue.boost { color: var(--boost-mid); }
+  #volumeValue.danger { color: var(--boost-high); }
+  #volumeValue.extreme { color: var(--boost-extreme); }
+
+  input[type="number"] {
+    width: 64px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 3px 4px;
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .slider-area { position: relative; padding-bottom: 20px; margin-bottom: 8px; }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--safe) 0%,
+      var(--safe) 12%,
+      var(--boost-mid) 18%,
+      var(--boost-mid) 27%,
+      var(--boost-high) 33%,
+      var(--boost-high) 55%,
+      var(--boost-extreme) 65%,
+      var(--boost-extreme) 100%
+    );
+    outline: none;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #f2f1ee;
+    border: 2px solid #111;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #f2f1ee;
+    border: 2px solid #111;
+    cursor: pointer;
+    margin-top: -5px;
+  }
+
+  .unity-mark {
+    position: absolute;
+    left: 16.6667%;
+    top: 10px;
+    width: 1px;
+    height: 8px;
+    background: var(--text-dim);
+    transform: translateX(-0.5px);
+  }
+  .scale {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+  .scale span { position: absolute; transform: translateX(-50%); }
+  .scale span:first-child { left: 0%; transform: translateX(0); }
+  .scale span:last-child { left: 100%; transform: translateX(-100%); }
+  .scale span.unity { left: 16.6667%; }
+
+  button#resetBtn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 9px;
+    border-radius: 8px;
+    background: var(--panel);
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+  button#resetBtn:hover { border-color: var(--text-dim); }
+
+  #warning {
+    display: none;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 10px 0 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Volume Booster</h1>
+    <div class="site" id="siteLabel">—</div>
+
+    <div id="controls">
+      <div class="readout">
+        <span id="volumeValue" class="safe">100%</span>
+        <input type="number" id="volumeNumber" min="0" max="1000" step="5" placeholder="100"/>
+      </div>
+
+      <div class="slider-area">
+        <input type="range" id="volumeSlider" min="0" max="1000" step="5" value="100" />
+        <div class="unity-mark"></div>
+        <div class="scale">
+          <span>0%</span>
+          <span class="unity">100%</span>
+          <span>1000%</span>
+        </div>
+      </div>
+
+      <button id="resetBtn">Default (100%)</button>
+    </div>
+
+    <div id="warning"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
