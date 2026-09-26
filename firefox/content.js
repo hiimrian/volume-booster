@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
   let currentVolume = 100;
   let audioCtx = null;
   const nodeMap = new Map();
@@ -23,7 +25,7 @@
       source.connect(gainNode).connect(ctx.destination);
       nodeMap.set(el, gainNode);
     } catch (err) {
-      console.warn('[Tab Volume Booster] ignored element:', err.message);
+      console.warn('[Volume Booster] ignored element:', err.message);
     }
   }
 
@@ -63,10 +65,10 @@
     { once: true, capture: true }
   );
 
-  browser.runtime.onMessage.addListener((message) => {
+  browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message && message.type === 'SET_VOLUME') {
       setVolume(message.value);
-      return Promise.resolve({ ok: true });
+      if (sendResponse) sendResponse({ ok: true });
     }
   });
 })();
